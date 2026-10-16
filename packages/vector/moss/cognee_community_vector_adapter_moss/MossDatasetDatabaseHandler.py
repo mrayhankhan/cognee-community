@@ -22,7 +22,9 @@ class MossDatasetDatabaseHandler(DatasetDatabaseHandlerInterface):
             "vector_database_provider": vector_config.vector_db_provider,
             "vector_database_url": vector_config.vector_db_url,
             "vector_database_key": vector_config.vector_db_key,
-            "vector_database_name": vector_config.vector_db_name,
+            # Every dataset shares the Moss project, so the dataset id is appended
+            # to give it its own index; MossAdapter splits the two apart again.
+            "vector_database_name": f"{vector_config.vector_db_name}/{dataset_id}",
             "vector_dataset_database_handler": "moss",
         }
 

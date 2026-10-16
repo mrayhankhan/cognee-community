@@ -73,6 +73,23 @@ The adapter multiplexes all Cognee collections into a **single Moss index** (`co
 - The index is loaded locally via `load_index(auto_refresh=True)` for fast sub-10ms queries
 - Async Moss jobs (`create_index`, `add_docs`) are polled to completion internally
 
+## Dataset isolation
+
+With `vector_dataset_database_handler` set to `"moss"`, cognee runs in multi-user mode
+and every dataset shares your Moss project. The handler names each dataset
+`<project_id>/<dataset_id>`, and the adapter gives it its own index
+(`cognee-dataset-<dataset_id>`), so datasets can hold the same entity without
+overwriting each other, and deleting a dataset removes only that dataset's index.
+Each dataset uses one of the project's indexes, so a free-tier project (3 indexes)
+holds up to 3 datasets.
+
+Without the handler (`ENABLE_BACKEND_ACCESS_CONTROL=false`), all data goes into the
+single shared `cognee-index-{timestamp}` index as before.
+
+Data written in multi-user mode by an older adapter version sits in the shared
+`cognee-index-*` index and is not visible to the per-dataset indexes. Re-run
+`cognify` for each dataset to rebuild it, then delete the old index.
+
 ## Running Tests
 
 ```bash
