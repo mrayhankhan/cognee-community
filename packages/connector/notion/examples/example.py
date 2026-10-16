@@ -20,9 +20,9 @@ fetched until you run this script. Scope what you ingest with ``page_ids`` /
 ────────────────────────────────────────────────────────────────────────────
 One-time setup
 ────────────────────────────────────────────────────────────────────────────
-1. Install the extra:
+1. Install the dependencies:
 
-       pip install "cognee[notion]"      # or: uv sync --extra notion
+       cd packages/connector/notion && uv sync
 
 2. Create an internal integration at https://www.notion.so/my-integrations and
    copy its token.

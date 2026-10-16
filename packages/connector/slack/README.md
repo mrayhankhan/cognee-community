@@ -12,8 +12,7 @@ and **forget-on-delete** with no core changes.
 ## Install
 
 ```bash
-uv pip install cognee-community-connector-slack
-# or, from this monorepo:
+# Not published on PyPI yet; install from this monorepo:
 cd packages/connector/slack && uv sync --all-extras
 ```
 

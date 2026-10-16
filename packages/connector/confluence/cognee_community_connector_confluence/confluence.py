@@ -79,14 +79,14 @@ def _make_session(email: str, api_token: str) -> Any:
     """Build a ``requests`` session authenticated with a Confluence API token.
 
     ``requests`` is imported lazily so it stays an optional dependency
-    (``pip install "cognee[confluence]"``).
+    (``pip install requests``).
     """
     try:
         import requests
     except ImportError as exc:  # pragma: no cover - depends on optional extra
         raise ImportError(
-            'The Confluence connector requires "requests". Install the extra:\n'
-            '    pip install "cognee[confluence]"'
+            'The Confluence connector requires "requests". Install it with:\n'
+            "    pip install requests"
         ) from exc
 
     session = requests.Session()
@@ -314,7 +314,7 @@ def confluence_source(
         import dlt
     except ImportError as exc:
         raise ImportError(
-            'The Confluence connector requires the dlt extra: pip install "cognee[confluence]".'
+            'The Confluence connector requires dlt: pip install "dlt[sqlalchemy]".'
         ) from exc
 
     base_url = base_url.rstrip("/")

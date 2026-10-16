@@ -40,8 +40,8 @@ _NOTION_VERSION = "2022-06-28"
 _MAX_RETRIES = 5
 
 _EXTRA_HINT = (
-    'The Notion connector requires the "notion" extra: pip install "cognee[notion]" '
-    "(provides dlt and notion-client)."
+    "The Notion connector requires dlt and notion-client: "
+    'pip install "dlt[sqlalchemy]>=1.9.0,<2" "notion-client>=2.2.1,<3"'
 )
 
 _HEADING_PREFIX = {"heading_1": "# ", "heading_2": "## ", "heading_3": "### "}

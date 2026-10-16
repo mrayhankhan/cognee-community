@@ -306,7 +306,7 @@ def test_confluence_source_requires_dlt(monkeypatch):
         return real_import(name, *args, **kwargs)
 
     monkeypatch.setattr(builtins, "__import__", fake_import)
-    with pytest.raises(ImportError, match="cognee\\[confluence\\]"):
+    with pytest.raises(ImportError, match=r"dlt\[sqlalchemy\]"):
         confluence_source(base_url=BASE_URL, session=object())
 
 

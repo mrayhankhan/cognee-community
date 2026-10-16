@@ -12,8 +12,7 @@ purged from memory on the next sync) with no core changes.
 ## Install
 
 ```bash
-uv pip install cognee-community-connector-confluence
-# or, from this monorepo:
+# Not published on PyPI yet; install from this monorepo:
 cd packages/connector/confluence && uv sync --all-extras
 ```
 
