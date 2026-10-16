@@ -19,8 +19,7 @@ extraction) via cognee's self-describing content-column mechanism.
 ## Install
 
 ```bash
-uv pip install cognee-community-connector-google-drive
-# or, from this monorepo:
+# Not published on PyPI yet; install from this monorepo:
 cd packages/connector/google-drive && uv sync --all-extras
 ```
 

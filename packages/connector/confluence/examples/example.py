@@ -12,9 +12,9 @@ are forgotten from memory on the next sync.
 ────────────────────────────────────────────────────────────────────────────
 One-time setup
 ────────────────────────────────────────────────────────────────────────────
-1. Install the extra:
+1. Install the dependencies:
 
-       pip install "cognee[confluence]"     # or: uv sync --extra confluence
+       cd packages/connector/confluence && uv sync
 
 2. Create a Confluence API token at
    https://id.atlassian.com/manage-profile/security/api-tokens

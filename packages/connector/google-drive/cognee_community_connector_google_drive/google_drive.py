@@ -104,7 +104,7 @@ def build_drive_service(
     """Build an authenticated Drive v3 API client.
 
     The Google client libraries are imported lazily so they remain an optional
-    dependency (``pip install "cognee[google-drive]"``).
+    dependency (``pip install google-api-python-client google-auth google-auth-oauthlib``).
     """
     try:
         from google.auth.transport.requests import Request
@@ -114,8 +114,8 @@ def build_drive_service(
         from googleapiclient.discovery import build
     except ImportError as exc:  # pragma: no cover - depends on optional extra
         raise ImportError(
-            'The Google Drive connector requires the "google-drive" extra. '
-            'Install it with: pip install "cognee[google-drive]"'
+            "The Google Drive connector requires the Google client libraries. Install them "
+            "with: pip install google-api-python-client google-auth google-auth-oauthlib"
         ) from exc
 
     if auth_mode == "service_account":

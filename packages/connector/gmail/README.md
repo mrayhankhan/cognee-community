@@ -13,8 +13,7 @@ to core cognee.
 ## Install
 
 ```bash
-uv pip install cognee-community-connector-gmail
-# or, from this monorepo:
+# Not published on PyPI yet; install from this monorepo:
 cd packages/connector/gmail && uv sync --all-extras
 ```
 

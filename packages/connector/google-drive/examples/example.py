@@ -7,7 +7,7 @@ files that changed since the last run, and files removed from the folder
 (deleted or trashed) are forgotten automatically.
 
 Install:
-    pip install "cognee[google-drive]"
+    cd packages/connector/google-drive && uv sync
 
 Auth setup — pick ONE of the two modes below.
 
