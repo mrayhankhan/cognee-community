@@ -25,6 +25,11 @@ JOB_POLL_TIMEOUT = 300
 RETRY_COUNT = 3
 RETRY_BACKOFF = 2
 
+# Single-user mode shares one timestamped index per project. Each dataset in
+# multi-user mode gets its own index, named after the dataset id.
+LEGACY_INDEX_PREFIX = "cognee-index-"
+DATASET_INDEX_PREFIX = "cognee-dataset-"
+
 
 def _stringify_metadata(obj):
     """Flatten a dict so all values are strings (Moss requirement)."""
@@ -64,22 +69,34 @@ class MossAdapter(VectorDBInterface):
         self.embedding_engine = embedding_engine
         self.database_name = database_name
         self.api_key = api_key
-        self.client = MossClient(project_id=database_name, project_key=api_key)
-        self._index_name = f"cognee-index-{int(time.time())}"
+        # MossDatasetDatabaseHandler names each dataset "<project_id>/<dataset_id>".
+        # A bare project id (single-user mode) keeps the shared legacy index.
+        project_id, _, dataset_scope = database_name.partition("/")
+        self.dataset_scope = dataset_scope or None
+        self.client = MossClient(project_id=project_id, project_key=api_key)
+        if self.dataset_scope:
+            self._index_name = f"{DATASET_INDEX_PREFIX}{self.dataset_scope}"
+        else:
+            self._index_name = f"{LEGACY_INDEX_PREFIX}{int(time.time())}"
         self._index_ready = False
         self._index_loaded = False
         self._collections: set[str] = set()
         self._create_lock = asyncio.Lock()
         self._load_lock = asyncio.Lock()
 
+    def _owns_index(self, name: str) -> bool:
+        if self.dataset_scope:
+            return name == self._index_name
+        return name.startswith(LEGACY_INDEX_PREFIX)
+
     async def _find_existing_index(self):
-        """Check if a cognee index already exists in the project."""
+        """Check if this adapter's cognee index already exists in the project."""
         if self._index_ready:
             return True
         try:
             indexes = await self.client.list_indexes()
             for idx in indexes:
-                if idx.name.startswith("cognee-index-"):
+                if self._owns_index(idx.name):
                     self._index_name = idx.name
                     self._index_ready = True
                     return True
@@ -394,7 +411,7 @@ class MossAdapter(VectorDBInterface):
         try:
             indexes = await self.client.list_indexes()
             for index in indexes:
-                if index.name.startswith("cognee-index-"):
+                if self._owns_index(index.name):
                     if self._index_loaded:
                         await self.client.unload_index(index.name)
                     await self.client.delete_index(index.name)
